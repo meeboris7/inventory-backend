@@ -55,6 +55,14 @@ export interface ReturnTicket {
   supplier_id: string | null;
 }
 
+export interface SupplierReminder {
+  reminder_id: string;
+  po_id: string;
+  supplier_id: string;
+  message: string;
+  sent_date: string; // ISO string
+}
+
 // --- Mock Data ---
 export const products: Product[] = [
   {
@@ -211,6 +219,17 @@ export const returns: ReturnTicket[] = [
   }
 ];
 
+export const supplierReminders: SupplierReminder[] = [
+  
+  // {
+  //   reminder_id: "REM-20250708-001",
+  //   po_id: "PO-20250601-001", 
+  //   supplier_id: "S001",
+  //   message: "Urgent follow-up for delayed PO-20250601-001.",
+  //   sent_date: new Date('2025-07-08T09:00:00Z').toISOString()
+  // }
+];
+
 // Helper functions for data access
 export const getProduct = (id: string) => products.find(p => p.product_id === id);
 export const getStock = (id: string) => stock.find(s => s.product_id === id);
@@ -252,4 +271,18 @@ export const addReturnTicket = (ticket: Omit<ReturnTicket, 'return_id' | 'return
   };
   returns.push(newReturn);
   return newReturn;
+};
+
+
+let reminderCounter = supplierReminders.length; // Initialize counter based on existing entries
+
+export const addSupplierReminder = (reminder: Omit<SupplierReminder, 'reminder_id' | 'sent_date'>) => {
+  reminderCounter++;
+  const newReminder: SupplierReminder = {
+    reminder_id: `REM-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${String(reminderCounter).padStart(3, '0')}`,
+    sent_date: new Date().toISOString(),
+    ...reminder,
+  };
+  supplierReminders.push(newReminder); // Add to the in-memory array
+  return newReminder;
 };
