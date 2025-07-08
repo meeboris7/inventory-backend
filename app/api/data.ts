@@ -1,7 +1,5 @@
 // app/api/data.ts
 
-import { datetime } from '@vercel/og'; 
-
 
 export interface Product {
   product_id: string;
